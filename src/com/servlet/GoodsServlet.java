@@ -234,6 +234,7 @@ public class GoodsServlet extends HttpServlet {
                     for (FileItem item : fileItemList) {
                         if (item.isFormField()) {
                             // 表示普通控件
+                            PrintWriter out = resp.getWriter();
                             if ("id".equals(item.getFieldName())) {
                                 String id = item.getString("utf-8");
                                 gi.setId(StringUtils.str2Int(id,0));
@@ -241,18 +242,28 @@ public class GoodsServlet extends HttpServlet {
                             if ("goodsInfoName".equals(item.getFieldName())) {
                                 String goodsInfoName = item.getString("utf-8");
                                 gi.setGoodsInfoName(goodsInfoName);
+                                if (!StringUtils.isNotNull(gi.getGoodsInfoName())) {
+                                    out.println("<script>alert('名字不能为空');history.back();</script>");
+                                }
                             }
                             if ("goodsInfoPrice".equals(item.getFieldName())) {
                                 String goodsInfoPrice = item.getString("utf-8");
                                 gi.setGoodsInfoPrice(StringUtils.str2Double(goodsInfoPrice,0.0));
+                                if (gi.getGoodsInfoPrice()<0) {
+                                    out.println("<script>alert('价格不能为负');history.back();</script>");
+                                }
                             }
                             if ("goodsInfoDescription".equals(item.getFieldName())) {
                                 String goodsInfoDescription = item.getString("utf-8");
                                 gi.setGoodsInfoDescription(goodsInfoDescription);
+                                if (!StringUtils.isNotNull(gi.getGoodsInfoDescription())) {
+                                    out.println("<script>alert('描述不能为空');history.back();</script>");
+                                }
                             }
                             if ("goodsInfoStock".equals(item.getFieldName())) {
                                 String goodsInfoStock = item.getString("utf-8");
                                 gi.setGoodsInfoStock(StringUtils.str2Int(goodsInfoStock,0));
+
                             }
                             if ("flag".equals(item.getFieldName())) {
                                 String flag = item.getString("utf-8");
